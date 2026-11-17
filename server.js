@@ -17,6 +17,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { createDatabase, hashPassword, verifyPassword } from './db.js';
 
@@ -209,12 +210,13 @@ function buildOwnerEmailText(record) {
   ].join('\n');
 }
 
-export function createAppServer(options = {}) {
+export function createRequestHandler(options = {}) {
   const rootDir = options.rootDir || __dirname;
-  const dataDir = options.dataDir || path.join(rootDir, 'data');
+  const dataDir = options.dataDir || (process.env.VERCEL ? path.join(os.tmpdir(), 'warhawk-data') : path.join(rootDir, 'data'));
   const rateWindowMs = options.rateWindowMs ?? 15 * 60 * 1000;
   const rateMax = options.rateMax ?? Number(process.env.RATE_LIMIT_MAX || 8);
   const dedupeWindowMs = options.dedupeWindowMs ?? 5 * 60 * 1000;
+  const sessionSecret = options.sessionSecret || process.env.ADMIN_SESSION_SECRET || process.env.ADMIN_DEFAULT_PASSWORD || 'warhawk-session-secret-change-in-prod';
 
   const rateStore = new Map();
   const loginAttempts = new Map();
@@ -366,10 +368,39 @@ export function createAppServer(options = {}) {
     return list;
   }
 
+  function createSignedToken(payload) {
+    const jsonStr = JSON.stringify(payload);
+    const encoded = Buffer.from(jsonStr).toString('base64url');
+    const signature = crypto.createHmac('sha256', sessionSecret).update(encoded).digest('base64url');
+    return `${encoded}.${signature}`;
+  }
+
+  function verifySignedToken(token) {
+    if (!token || typeof token !== 'string') return null;
+    const dotIdx = token.indexOf('.');
+    if (dotIdx === -1) return null;
+    const encoded = token.slice(0, dotIdx);
+    const signature = token.slice(dotIdx + 1);
+    const expectedSig = crypto.createHmac('sha256', sessionSecret).update(encoded).digest('base64url');
+    if (signature.length !== expectedSig.length) return null;
+    try {
+      if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSig))) return null;
+      const data = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8'));
+      if (typeof data.expiresAt === 'number' && Date.now() > data.expiresAt) return null;
+      return data;
+    } catch {
+      return null;
+    }
+  }
+
   function getAuthenticatedSession(req) {
     const cookies = parseCookies(req);
     const token = cookies.wh_admin_session;
     if (!token) return null;
+    // 1. Verify stateless HMAC signed session (persists across serverless instances)
+    const verified = verifySignedToken(token);
+    if (verified) return verified;
+    // 2. Fallback to in-memory sessions
     const session = sessions.get(token);
     if (!session) return null;
     if (Date.now() > session.expiresAt) {
@@ -491,7 +522,7 @@ export function createAppServer(options = {}) {
     });
   }
 
-  const server = http.createServer(async (req, res) => {
+  return async function handleRequest(req, res) {
     const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
     const pathname = url.pathname;
 
@@ -791,14 +822,15 @@ export function createAppServer(options = {}) {
       loginAttempts.delete(ip);
       await db.updateAdminLastLogin(username);
 
-      // Create session
-      const token = crypto.randomBytes(32).toString('hex');
+      // Create session (stateless HMAC signed + in-memory cached)
       const maxAgeMs = 8 * 60 * 60 * 1000; // 8 hours
-      sessions.set(token, {
+      const sessionData = {
         username: user.username,
         role: user.role || 'admin',
         expiresAt: now + maxAgeMs
-      });
+      };
+      const token = createSignedToken(sessionData);
+      sessions.set(token, sessionData);
 
       const isProd = process.env.NODE_ENV === 'production';
       const cookieHeader = `wh_admin_session=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAgeMs / 1000}${isProd ? '; Secure' : ''}`;
@@ -1020,9 +1052,12 @@ export function createAppServer(options = {}) {
     }
 
     sendJson(res, 405, { ok: false, error: 'Method Not Allowed' });
-  });
+  };
+}
 
-  return server;
+export function createAppServer(options = {}) {
+  const handler = createRequestHandler(options);
+  return http.createServer(handler);
 }
 
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === __filename;

@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
 
-const jsFiles = ['server.js', 'script.js', 'contact-form.js', 'db.js'];
+const jsFiles = ['server.js', 'script.js', 'contact-form.js', 'db.js', 'api/index.js'];
 for (const file of jsFiles) {
   execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
 }
@@ -32,13 +32,25 @@ const copyTargets = [
   'db.js',
   'package.json',
   '.env.example',
-  'README.md'
+  'README.md',
+  'vercel.json'
 ];
 
 for (const item of copyTargets) {
   const src = path.join(root, item);
   if (fs.existsSync(src)) {
     await fsp.copyFile(src, path.join(dist, item));
+  }
+}
+
+// Copy api directory
+const apiSrc = path.join(root, 'api');
+const apiDest = path.join(dist, 'api');
+if (fs.existsSync(apiSrc)) {
+  await fsp.mkdir(apiDest, { recursive: true });
+  const apiFiles = await fsp.readdir(apiSrc);
+  for (const file of apiFiles) {
+    await fsp.copyFile(path.join(apiSrc, file), path.join(apiDest, file));
   }
 }
 

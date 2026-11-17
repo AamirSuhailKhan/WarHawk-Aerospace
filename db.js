@@ -13,6 +13,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -81,9 +82,20 @@ class LocalDatabase {
   }
 
   async init() {
-    const dir = path.dirname(this.filePath);
-    if (!fs.existsSync(dir)) {
-      await fsp.mkdir(dir, { recursive: true });
+    let dir = path.dirname(this.filePath);
+    try {
+      if (!fs.existsSync(dir)) {
+        await fsp.mkdir(dir, { recursive: true });
+      }
+    } catch (err) {
+      if (err.code === 'EROFS' || err.code === 'EACCES') {
+        const fallbackDir = path.join(os.tmpdir(), 'warhawk-data');
+        await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => {});
+        this.filePath = path.join(fallbackDir, path.basename(this.filePath));
+        dir = fallbackDir;
+      } else {
+        throw err;
+      }
     }
     if (fs.existsSync(this.filePath)) {
       try {
@@ -103,10 +115,24 @@ class LocalDatabase {
 
   async persist() {
     this.writePromise = this.writePromise.then(async () => {
-      const tempPath = `${this.filePath}.${Date.now()}.tmp`;
-      const json = JSON.stringify(this.data, null, 2);
-      await fsp.writeFile(tempPath, json, 'utf8');
-      await fsp.rename(tempPath, this.filePath);
+      try {
+        const tempPath = `${this.filePath}.${Date.now()}.tmp`;
+        const json = JSON.stringify(this.data, null, 2);
+        await fsp.writeFile(tempPath, json, 'utf8');
+        await fsp.rename(tempPath, this.filePath);
+      } catch (err) {
+        if (err.code === 'EROFS' || err.code === 'EACCES') {
+          const fallbackDir = path.join(os.tmpdir(), 'warhawk-data');
+          await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => {});
+          this.filePath = path.join(fallbackDir, path.basename(this.filePath));
+          const tempPath = `${this.filePath}.${Date.now()}.tmp`;
+          const json = JSON.stringify(this.data, null, 2);
+          await fsp.writeFile(tempPath, json, 'utf8');
+          await fsp.rename(tempPath, this.filePath);
+        } else {
+          throw err;
+        }
+      }
     });
     return this.writePromise;
   }
@@ -655,8 +681,10 @@ export async function createDatabase({ dataDir, connectionString } = {}) {
     }
   }
 
-  // Local fallback
-  const storePath = path.join(dataDir || path.join(__dirname, 'data'), 'warhawk-db.json');
+  // Local fallback with serverless read-only protection
+  const isServerless = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+  const resolvedDataDir = dataDir || (isServerless ? path.join(os.tmpdir(), 'warhawk-data') : path.join(__dirname, 'data'));
+  const storePath = path.join(resolvedDataDir, 'warhawk-db.json');
   const localDb = new LocalDatabase(storePath);
   await localDb.init();
   return {
