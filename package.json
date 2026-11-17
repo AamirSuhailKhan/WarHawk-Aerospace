@@ -1,0 +1,25 @@
+{
+  "name": "warhawk-aerospace",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Warhawk Aerospace cinematic web platform and contact inquiry service",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "lint": "node --check server.js && node --check script.js && node --check contact-form.js && node --check db.js",
+    "build": "node scripts/build.js",
+    "test": "node tests/api.test.js && node tests/e2e.test.js",
+    "migrate": "node scripts/migrate-data.js",
+    "backup": "node scripts/backup-db.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.52.0"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  }
+}

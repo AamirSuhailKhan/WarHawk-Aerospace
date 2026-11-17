@@ -1,0 +1,16 @@
+.git
+.github
+node_modules
+.env
+.env.*
+data
+backups
+dist
+test-results
+coverage
+tests
+scripts/audit-site.js
+scripts/capture-*.js
+*.log
+.DS_Store
+Thumbs.db

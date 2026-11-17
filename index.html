@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060B12">
+  <meta name="description" content="Warhawk Aerospace — Drone-as-a-Service (DaaS) and AI-powered aerial surveillance & industrial inspection for factories, campuses, and critical infrastructure across India.">
+  <title>WARHAWK AEROSPACE — Drone-as-a-Service & AI Surveillance</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://warhawk.aero/">
+  <meta property="og:title" content="WARHAWK AEROSPACE — Drone-as-a-Service & AI Surveillance">
+  <meta property="og:description" content="Turnkey Drone-as-a-Service (DaaS) and AI-powered aerial surveillance & industrial inspection for enterprises across India. 100% DGCA compliant.">
+  <meta property="og:image" content="assets/drone-enterprise.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WARHAWK AEROSPACE — Drone-as-a-Service & AI Surveillance">
+  <meta name="twitter:description" content="Turnkey Drone-as-a-Service (DaaS) and AI-powered aerial surveillance & industrial inspection for enterprises across India. 100% DGCA compliant.">
+  <meta name="twitter:image" content="assets/drone-enterprise.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=3">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Warhawk Aerospace",
+    "url": "https://warhawk.aero",
+    "logo": "https://warhawk.aero/assets/warhawk-emblem.png",
+    "description": "Turnkey Drone-as-a-Service (DaaS) and AI-powered aerial surveillance & industrial inspection for enterprises across India.",
+    "areaServed": "IN",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "sales",
+      "url": "https://warhawk.aero/contact"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <div id="loader" class="loader" aria-hidden="true">
+    <div class="loader-curtain top"></div>
+    <div class="loader-curtain bottom"></div>
+    <div class="loader-stage">
+      <div class="loader-eagle-wrap">
+        <span class="loader-ring r1"></span>
+        <span class="loader-ring r2"></span>
+        <div class="loader-eagle-badge">
+          <img src="assets/warhawk-emblem.png" alt="" class="loader-eagle">
+        </div>
+      </div>
+      <div class="loader-title">
+        <span class="loader-clip"><span>WARHAWK</span></span>
+        <span class="loader-clip"><span class="loader-sub">AEROSPACE</span></span>
+      </div>
+      <div class="loader-meter"><span id="loaderBar"></span></div>
+    </div>
+  </div>
+
+  <div id="page-progress" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header id="site-header" class="site-header">
+    <a class="wordmark" href="#top" aria-label="Warhawk Aerospace, back to top">
+      <span class="mark" aria-hidden="true"><img src="assets/warhawk-emblem.png" alt=""></span>
+      <span class="wordmark-text">WARHAWK<small>AEROSPACE</small></span>
+    </a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#manifesto" data-nav="manifesto">DaaS Model</a>
+      <a href="#flight" data-nav="flight">Flight Ops</a>
+      <a href="#systems" data-nav="systems">Platform</a>
+      <a href="#capabilities" data-nav="capabilities">Services</a>
+      <a href="#pricing" data-nav="pricing">Packages</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="/contact" class="nav-contact">Contact Us <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" id="menu-toggle" aria-label="Open navigation" aria-controls="mobile-nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav-backdrop" id="mobile-nav-backdrop" hidden></div>
+
+  <nav class="mobile-nav" id="mobile-nav" hidden aria-label="Mobile navigation">
+    <div class="mobile-nav-header">
+      <span class="mobile-nav-tag mono"><span class="badge-dot"></span> DGCA COMPLIANT • FLEET INDIA</span>
+      <span class="mobile-nav-system mono">SYS-V2.4</span>
+    </div>
+    <div class="mobile-nav-links">
+      <a href="#manifesto" data-nav="manifesto" class="mobile-nav-item">
+        <span class="mn-num mono">01</span>
+        <span class="mn-content">
+          <span class="mn-title">DaaS Model</span>
+          <span class="mn-desc">Turnkey Drones, Pilots &amp; Maintenance</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#flight" data-nav="flight" class="mobile-nav-item">
+        <span class="mn-num mono">02</span>
+        <span class="mn-content">
+          <span class="mn-title">Flight Operations</span>
+          <span class="mn-desc">Perimeter Patrols &amp; Mission Stages</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#systems" data-nav="systems" class="mobile-nav-item">
+        <span class="mn-num mono">03</span>
+        <span class="mn-content">
+          <span class="mn-title">Platform &amp; AI</span>
+          <span class="mn-desc">Edge Neural Detection &amp; Telemetry</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#capabilities" data-nav="capabilities" class="mobile-nav-item">
+        <span class="mn-num mono">04</span>
+        <span class="mn-content">
+          <span class="mn-title">7 Core Services</span>
+          <span class="mn-desc">Patrol, Inspection &amp; Emergency Ops</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#pricing" data-nav="pricing" class="mobile-nav-item">
+        <span class="mn-num mono">05</span>
+        <span class="mn-content">
+          <span class="mn-title">Service Packages</span>
+          <span class="mn-desc">Flexible Monthly &amp; Annual SLA</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#contact" data-nav="contact" class="mobile-nav-item">
+        <span class="mn-num mono">06</span>
+        <span class="mn-content">
+          <span class="mn-title">Contact</span>
+          <span class="mn-desc">Direct Operations Center Dispatch</span>
+        </span>
+        <span class="mn-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+    <div class="mobile-nav-footer">
+      <a href="/contact" class="mobile-cta">REQUEST PROPOSAL <span aria-hidden="true">↗</span></a>
+      <div class="mobile-nav-meta mono">
+        <span>BENGALURU, INDIA</span>
+        <span>•</span>
+        <span>24×7 HYBRID DEFENSE</span>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <canvas class="bg-canvas" data-mode="hero" aria-hidden="true"></canvas>
+      <div class="hero-grain-lines" aria-hidden="true"></div>
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-main">
+        <div class="hero-headline">
+          <h1 id="hero-title" class="display"><span class="line-clip"><span>AUTONOMOUS</span></span><span class="line-clip"><span>AI <em>DEFENSE.</em></span></span></h1>
+          <p class="hero-lede animate-up">Complete Drone-as-a-Service (DaaS) and AI surveillance for factories, industrial campuses, warehouses, solar farms, and infrastructure operators across India.</p>
+          <div class="hero-cta-row animate-up">
+            <a class="primary-link" href="#capabilities"><span>EXPLORE SERVICES</span><span class="circle-arrow" aria-hidden="true">↗</span></a>
+            <a class="secondary-link" href="/contact">REQUEST SERVICE PROPOSAL</a>
+          </div>
+        </div>
+        <div class="hero-drone-field" id="hero-drone-field" aria-hidden="true">
+          <div class="hero-halo halo-one"></div>
+          <div class="hero-drone-wrap" id="hero-drone-wrap"><img src="assets/drone-enterprise.png" class="hero-drone" alt="Warhawk Commercial Enterprise Surveillance Drone" fetchpriority="high"></div>
+        </div>
+      </div>
+      <div class="hero-bottom mono"><a href="#manifesto" class="scroll-down"><span class="scroll-wheel"></span> SCROLL TO EXPLORE <span class="arrow-down" aria-hidden="true">↓</span></a></div>
+    </section>
+
+    <section class="manifesto" id="manifesto" aria-labelledby="manifesto-title">
+      <div class="manifesto-bg" aria-hidden="true"></div>
+      <div class="manifesto-orb" aria-hidden="true"></div>
+      <div class="manifesto-grid">
+        <div>
+          <h2 id="manifesto-title" class="manifesto-title">NOT JUST DRONES.<br><span class="text-shine">COMPLETE TURNKEY</span><br>OPERATIONS<span class="acid">.</span></h2>
+          <div class="manifesto-bottom">
+            <p>We don’t just sell drones or standalone software. Warhawk provides complete end-to-end aerial operations: commercial enterprise drones, proprietary AI surveillance software, DGCA-certified remote pilots, 24×7 operations center monitoring, and scheduled maintenance under monthly or annual service contracts.</p>
+            <div class="manifesto-fleet-preview">
+              <div class="fleet-drone-card">
+                <div class="fdc-header">
+                  <span class="fdc-tag mono"><span class="badge-dot"></span> FLEET AIRFRAME</span>
+                  <span class="fdc-status mono">DGCA RPC READY</span>
+                </div>
+                <div class="fdc-visual">
+                  <img src="assets/drone-enterprise.png" alt="Warhawk Commercial Fleet Drone" class="fdc-img">
+                </div>
+                <div class="fdc-footer mono">
+                  <div class="fdc-spec"><span>AIRFRAME</span><strong>WH-X4 SURVEILLANCE</strong></div>
+                  <div class="fdc-spec"><span>OPTICS / SENSORS</span><strong>4K OPTICAL + FLIR THERMAL</strong></div>
+                  <div class="fdc-spec"><span>MANAGED SERVICE</span><strong>PREDICTABLE MONTHLY SLA</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="manifesto-pillars">
+          <div class="manifesto-pillar">
+            <span class="manifesto-pillar-num">01 / TURNKEY DAAS</span>
+            <h3>MANAGED SERVICE CONTRACTS</h3>
+            <p>Airframes, certified pilots, flight logs, battery rotation, and maintenance included in one predictable monthly rate.</p>
+          </div>
+          <div class="manifesto-pillar">
+            <span class="manifesto-pillar-num">02 / PROPRIETARY AI</span>
+            <h3>EDGE & CLOUD DETECTION</h3>
+            <p>Real-time neural recognition of persons, vehicles, equipment, obstacles, and perimeter breaches with human verification.</p>
+          </div>
+          <div class="manifesto-pillar">
+            <span class="manifesto-pillar-num">03 / DGCA COMPLIANT</span>
+            <h3>INDIAN AIRSPACE CLEARANCE</h3>
+            <p>100% compliant with DGCA regulations, Digital Sky permissions, certified RPC pilots, and strict VLOS/BVLOS boundaries.</p>
+          </div>
+          <div class="manifesto-pillar">
+            <span class="manifesto-pillar-num">04 / HYBRID 24×7</span>
+            <h3>CONTINUOUS MONITORING</h3>
+            <p>Continuous coverage blending existing CCTV, ground sensors, security personnel, and scheduled drone flights.</p>
+          </div>
+        </div>
+      </div>
+      <div class="manifesto-rule"></div>
+    </section>
+
+    <section id="flight" class="flight-sequence" aria-label="Warhawk flight operations overview">
+      <div class="flight-sticky">
+        <div class="flight-bg-grid" aria-hidden="true"></div>
+        <canvas class="bg-canvas" data-mode="flight" aria-hidden="true"></canvas>
+        <div class="flight-center-mark" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div></div>
+        <div class="flight-drone-shell" id="flight-drone-shell" aria-hidden="true">
+          <div class="flight-drone-halo"></div><img src="assets/drone-enterprise.png" alt="Warhawk Autonomous Flight Airframe" class="flight-drone">
+        </div>
+        <div class="flight-text flight-text-1 active" data-chapter="0">
+          <h2>SCHEDULED<br><i>PERIMETER</i><br>PATROLS.</h2>
+          <p>Automated geo-fenced security sweeps around industrial perimeters, warehouses, and corporate facilities.</p>
+        </div>
+        <div class="flight-text flight-text-2" data-chapter="1">
+          <h2>REAL-TIME<br>AI OBJECT<br><i>DETECTION.</i></h2>
+          <p>Onboard neural networks identify vehicles, personnel, perimeter breaches, thermal hotspots, and anomalous activity.</p>
+        </div>
+        <div class="flight-text flight-text-3" data-chapter="2">
+          <h2>ACTIONABLE<br>EVIDENCE &<br><i>REPORTS.</i></h2>
+          <p>Encrypted live telemetry, instant operator alert dispatch, searchable flight archives, and auditable client portal reports.</p>
+        </div>
+        <div class="flight-bottom mono">
+          <span class="stage-label" id="flight-stage-label">STAGE 01 / INTRODUCTION</span>
+          <div class="timeline" aria-hidden="true"><span id="timelineFill"></span><i class="tick t1"></i><i class="tick t2"></i></div>
+          <span class="stage-pct" id="flight-percent">000%</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="interlude" aria-label="Warhawk Aerospace statement">
+      <div class="interlude-glow" aria-hidden="true"></div>
+      <canvas class="bg-canvas" data-mode="stars" aria-hidden="true"></canvas>
+      <div class="interlude-main">
+        <div class="interlude-badge mono"><span class="badge-dot"></span> 360° SITUATIONAL AWARENESS</div>
+        <h2 class="interlude-heading">
+          <span class="line-solid">ZERO BLIND SPOTS.</span>
+          <span class="outline-word">ALWAYS WATCHING.</span>
+        </h2>
+        <p class="interlude-sub">Continuous aerial security through scheduled drone patrols, rapid incident dispatch, plant CCTV integration, and real-time AI perimeter intelligence.</p>
+        <div class="interlude-metrics mono">
+          <div class="im-item">
+            <span class="im-val">360°</span>
+            <span class="im-lbl">PERIMETER AUDIT</span>
+          </div>
+          <div class="im-sep" aria-hidden="true">/</div>
+          <div class="im-item">
+            <span class="im-val">&lt;180s</span>
+            <span class="im-lbl">INCIDENT DISPATCH</span>
+          </div>
+          <div class="im-sep" aria-hidden="true">/</div>
+          <div class="im-item">
+            <span class="im-val">100%</span>
+            <span class="im-lbl">DGCA COMPLIANT</span>
+          </div>
+          <div class="im-sep" aria-hidden="true">/</div>
+          <div class="im-item">
+            <span class="im-val">24×7</span>
+            <span class="im-lbl">HYBRID DEFENSE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="systems" id="systems" aria-labelledby="systems-title">
+      <div class="systems-sticky">
+        <div class="systems-backdrop" aria-hidden="true"></div>
+        <div class="systems-orb" aria-hidden="true"></div>
+        <div class="systems-copy">
+          <h2 id="systems-title">PROPRIETARY AI.<br><em>ENTERPRISE</em><br>RELIABILITY.</h2>
+          <p>Warhawk builds proprietary AI Surveillance & Drone Management Software and delivers operations through proven commercial enterprise drone platforms. Eliminating custom hardware manufacturing risk allows us to focus entirely on AI intelligence, flight reliability, and client SLA delivery.</p>
+        </div>
+        <div class="systems-visual" aria-hidden="true">
+          <div class="systems-radar"><div></div><div></div><div></div></div>
+          <div class="systems-frame">
+            <div class="systems-hud-tag mono"><span class="badge-dot"></span> FLEET AIRFRAME • ACTIVE TELEMETRY</div>
+            <div class="systems-hud-spec mono">ALT: 120M • 4K OPTICAL / FLIR THERMAL</div>
+            <img src="assets/drone-enterprise.png" class="systems-drone" alt="Warhawk Autonomous Enterprise Airframe">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="capabilities" id="capabilities" aria-labelledby="capabilities-title">
+      <div class="cap-bg-grid" aria-hidden="true"></div>
+      <canvas class="bg-canvas" data-mode="subtle" aria-hidden="true"></canvas>
+      <div class="capabilities-header">
+        <div class="cap-title-row">
+          <h2 id="capabilities-title">7 CORE SERVICES.<br><span>ONE MANAGED PARTNER.</span></h2>
+          <p>Comprehensive aerial surveillance, automated incident response, and precision industrial inspection designed for high-value facilities across India.</p>
+          <div class="cap-simulation-note mono" role="note">
+            <span class="badge-dot"></span> INTERACTIVE CAPABILITY PREVIEWS • SIMULATED SENSOR &amp; TELEMETRY HUDs
+          </div>
+        </div>
+      </div>
+      <div class="cap-filters mono" role="tablist" aria-label="Service categories">
+        <button class="cap-filter-btn is-active" data-filter="all" role="tab" aria-selected="true">ALL 7 SERVICES (7)</button>
+        <button class="cap-filter-btn" data-filter="surveillance" role="tab" aria-selected="false">PERIMETER &amp; SURVEILLANCE (5)</button>
+        <button class="cap-filter-btn" data-filter="inspection" role="tab" aria-selected="false">INSPECTION &amp; EMERGENCIES (2)</button>
+      </div>
+
+      <div class="cap-grid">
+        <!-- 01. AI Security Patrol -->
+        <article class="cap-card cap-one" id="cap-patrol" data-category="surveillance" tabindex="-1">
+          <div class="cap-art cap-art-one">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="cap-scope scope-one"></div>
+            <div class="cap-scope scope-two"></div>
+            <div class="cap-scope scope-three"></div>
+            <div class="cap-sweep"></div>
+            <div class="blip b1"></div>
+            <div class="blip b2"></div>
+            <div class="hud-pill mono"><span>AUTONOMOUS</span> • GEO-FENCED</div>
+            <div class="hud-coords mono">LAT 28.5355° N • LON 77.3910° E</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 01 / 07</span>
+            <h3>AI SECURITY<br>PATROL</h3>
+            <p class="cap-desc">Scheduled aerial perimeter and campus security sweeps for factories, warehouses, and corporate facilities to audit boundary integrity and deter intrusions.</p>
+            <div class="cap-meta">GEO-FENCED WAYPOINTS • SCHEDULED CADENCE</div>
+            <a class="cap-action" href="/contact?category=Scheduled+Drone+Patrols">Inquire about AI Patrols <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 02. On-Demand Incident Surveillance -->
+        <article class="cap-card cap-two" id="cap-ondemand" data-category="surveillance" tabindex="-1">
+          <div class="cap-art cap-art-two">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="reticle-grid"></div>
+            <div class="reticle-ring"></div>
+            <div class="reticle-brackets">
+              <span class="rb-tl"></span><span class="rb-tr"></span>
+              <span class="rb-bl"></span><span class="rb-br"></span>
+            </div>
+            <div class="reticle-drone-target">
+              <img src="assets/drone-enterprise.png" alt="" class="reticle-drone-img" aria-hidden="true">
+            </div>
+            <div class="reticle-laser"></div>
+            <div class="hud-pill mono"><span>DISPATCH READY</span> • &lt;180s</div>
+            <div class="hud-coords mono">TARGET ACQUISITION VECTOR</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 02 / 07</span>
+            <h3>ON-DEMAND<br>SURVEILLANCE</h3>
+            <p class="cap-desc">Instant authorized operator launch upon perimeter tripwire, fence alarm, or ground incident to inspect anomalies safely with real-time video.</p>
+            <div class="cap-meta">SUB-3-MIN LAUNCH • LIVE VERIFICATION</div>
+            <a class="cap-action" href="/contact?category=Emergency+%26+Incident+Response">Inquire about On-Demand <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 03. AI Object & Activity Detection -->
+        <article class="cap-card cap-three" id="cap-detection" data-category="surveillance" tabindex="-1">
+          <div class="cap-art cap-art-three">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="neural-matrix">
+              <div class="neural-node nn-1"></div>
+              <div class="neural-node nn-2"></div>
+              <div class="neural-node nn-3"></div>
+              <div class="neural-node nn-4"></div>
+              <div class="neural-node nn-5"></div>
+              <svg class="neural-lines" viewBox="0 0 300 200" aria-hidden="true">
+                <line x1="66" y1="50" x2="150" y2="96" />
+                <line x1="228" y1="60" x2="150" y2="96" />
+                <line x1="84" y1="148" x2="150" y2="96" />
+                <line x1="222" y1="144" x2="150" y2="96" />
+              </svg>
+            </div>
+            <div class="ai-bbox bbox-one">
+              <span class="ai-tag mono">PERSON • 98.4%</span>
+            </div>
+            <div class="ai-bbox bbox-two">
+              <span class="ai-tag mono">VEHICLE • 99.1%</span>
+            </div>
+            <div class="hud-pill mono"><span>EDGE AI</span> • MULTI-CLASS</div>
+            <div class="hud-coords mono">PERSON / VEHICLE / BREACH INFERENCE</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 03 / 07</span>
+            <h3>AI OBJECT &amp;<br>ALERT ENGINE</h3>
+            <p class="cap-desc">Real-time edge recognition of persons, vehicles, equipment, obstacles, and unusual activities with instant encrypted alerts to your operations center.</p>
+            <div class="cap-meta">NEURAL DETECTION • HUMAN-IN-THE-LOOP</div>
+            <a class="cap-action" href="/contact?category=AI+Surveillance+%26+Live+Monitoring">Inquire about AI Detection <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 04. Industrial & Infrastructure Inspection -->
+        <article class="cap-card cap-four" id="cap-inspection" data-category="inspection" tabindex="-1">
+          <div class="cap-art cap-art-four">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="terrain terrain-a"></div>
+            <div class="terrain terrain-b"></div>
+            <div class="terrain terrain-c"></div>
+            <div class="inspection-matrix">
+              <div class="grid-cell"></div>
+              <div class="grid-cell hotspot"><span>HOTSPOT ΔT +14°C</span></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+            </div>
+            <div class="hud-pill mono"><span>THERMAL + 4K</span> • GIS</div>
+            <div class="hud-coords mono">SOLAR / GRID / PIPELINE SCAN</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 04 / 07</span>
+            <h3>INDUSTRIAL<br>INSPECTION</h3>
+            <p class="cap-desc">Thermal hotspot mapping, transmission tower structural diagnostics, pipeline corridor surveys, and high-resolution CAD/GIS orthomosaics.</p>
+            <div class="cap-meta">SOLAR DIODE DEFECTS • POWERLINE CORRIDORS</div>
+            <a class="cap-action" href="/contact?category=Industrial+%26+Infrastructure+Inspection">Inquire about Inspection <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 05. Emergency & Hazard Monitoring -->
+        <article class="cap-card cap-five" id="cap-emergency" data-category="inspection" tabindex="-1">
+          <div class="cap-art cap-art-five">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="flir-aura"></div>
+            <div class="hazard-rings">
+              <div class="h-ring hr1"></div>
+              <div class="h-ring hr2"></div>
+              <div class="h-ring hr3"></div>
+            </div>
+            <div class="hazard-beacon"></div>
+            <div class="hud-pill mono alert"><span>FLIR ACTIVE</span> • HAZARD</div>
+            <div class="hud-coords mono">REMOTE DUAL THERMAL + FLIR SENSOR</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 05 / 07</span>
+            <h3>EMERGENCY &amp;<br>HAZARD SCAN</h3>
+            <p class="cap-desc">Remote infrared inspection for fire, smoke, hazardous gas leaks, and industrial accident locations to protect human first responders.</p>
+            <div class="cap-meta">FLIR THERMAL • HAZARDOUS SITE ACCESS</div>
+            <a class="cap-action" href="/contact?category=Emergency+%26+Incident+Response">Inquire about Hazard Scan <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 06. Evidence & Client Reporting -->
+        <article class="cap-card cap-six" id="cap-evidence" data-category="surveillance" tabindex="-1">
+          <div class="cap-art cap-art-six">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="viewfinder-frame">
+              <span class="vf-tl"></span><span class="vf-tr"></span>
+              <span class="vf-bl"></span><span class="vf-br"></span>
+            </div>
+            <div class="audio-spectrum">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+            <div class="rec-indicator mono">
+              <span class="rec-dot"></span><span>REC • 4K 60FPS</span>
+            </div>
+            <div class="hud-pill mono"><span>SHA-256</span> • LOGGED</div>
+            <div class="hud-coords mono">TAMPER-PROOF AUDIT DIGEST</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 06 / 07</span>
+            <h3>EVIDENCE &amp;<br>REPORTING</h3>
+            <p class="cap-desc">Encrypted live video feeds, cloud flight archives, AI-generated daily incident digests, and searchable compliance dashboards for corporate security.</p>
+            <div class="cap-meta">SEARCHABLE ARCHIVES • CLIENT PORTAL</div>
+            <a class="cap-action" href="/contact?category=AI+Surveillance+%26+Live+Monitoring">Inquire about Reporting <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+
+        <!-- 07. 24x7 Integrated Coverage (Capstone Sensor Fusion) -->
+        <article class="cap-card cap-seven" id="cap-hybrid" data-category="surveillance" tabindex="-1">
+          <div class="cap-art cap-art-seven">
+            <span class="sim-badge mono">SIMULATED PREVIEW</span>
+            <div class="orbital-center">
+              <span class="orbital-core">C2</span>
+            </div>
+            <div class="orbital-ring or-1">
+              <div class="orbital-beacon b-cctv"><span class="beacon-label mono">CCTV NODE</span></div>
+            </div>
+            <div class="orbital-ring or-2">
+              <div class="orbital-beacon b-drone"><span class="beacon-label mono">DRONE FLEET</span></div>
+            </div>
+            <div class="orbital-ring or-3">
+              <div class="orbital-beacon b-ground"><span class="beacon-label mono">GROUND CREW</span></div>
+            </div>
+            <div class="hud-pill mono"><span>SENSOR FUSION</span> • 24×7</div>
+            <div class="hud-coords mono">CONTINUOUS MULTI-LAYER DEFENSE MESH</div>
+          </div>
+          <div class="cap-info">
+            <span class="cap-num">SERVICE 07 / 07 • CENTRAL SENSOR FUSION</span>
+            <h3>24×7 INTEGRATED<br>COVERAGE MESH</h3>
+            <p class="cap-desc">Unbroken security coverage through intelligent fusion of plant CCTV, perimeter ground sensors, on-site personnel, and scheduled drone rotations. No blind spots, full accountability, and human-verified response.</p>
+            <div class="cap-meta">CCTV + DRONES + GROUND TEAMS • FULL TURNKEY DAAS</div>
+            <a class="cap-action" href="/contact?category=Turnkey+DaaS+Contracts">Inquire about 24×7 Coverage <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="compliance-banner">
+        <div class="compliance-info">
+          <span class="compliance-badge">REGULATORY & ETHICAL GOVERNANCE</span>
+          <h4>DGCA Compliance & Responsible AI in India</h4>
+          <p>All operations follow DGCA rules, Digital Sky airspace permissions, certified remote pilots (RPC), and applicable VLOS/BVLOS restrictions. Our proprietary AI flags observable activity and never makes autonomous criminal determinations; tracking capabilities remain strictly bounded and under authorized human supervision.</p>
+        </div>
+        <div class="compliance-links">
+          <a class="cap-action" href="/contact?category=Turnkey+DaaS+Contracts">Consult Aviation Ops ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+      <div class="pricing-bg" aria-hidden="true"></div>
+      <div class="pricing-inner">
+        <div class="pricing-header">
+          <span class="pricing-eyebrow">TRANSPARENT REVENUE MODEL</span>
+          <h2 id="pricing-title">SERVICE PACKAGES &<br><span>INDICATIVE PRICING.</span></h2>
+          <p>Predictable monthly and annual service contracts. We provide the drones, certified pilots, AI software, operations monitoring, and maintenance.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <h3 class="pricing-tier">SCHEDULED PATROLS</h3>
+            <p class="pricing-scope">Routine scheduled perimeter & campus patrols for factories and warehouses.</p>
+            <div class="pricing-cost">
+              <span class="pricing-amount">₹40K–1L</span>
+              <span class="pricing-period">/ month</span>
+            </div>
+            <div class="pricing-cadence">Managed monthly or annual contract</div>
+            <ul class="pricing-features">
+              <li>Scheduled aerial perimeter sweeps</li>
+              <li>DGCA-certified pilot & flight ops</li>
+              <li>Battery charging & maintenance included</li>
+              <li>Basic incident notifications & flight logs</li>
+              <li>Geo-fenced flight waypoints & fail-safes</li>
+            </ul>
+            <a href="/contact?category=Scheduled+Drone+Patrols" class="pricing-action">Select Package ↗</a>
+          </article>
+
+          <article class="pricing-card is-popular">
+            <span class="pricing-pill">POPULAR CHOICE</span>
+            <h3 class="pricing-tier">AI SURVEILLANCE</h3>
+            <p class="pricing-scope">Active AI object detection, live monitoring feed & automated incident reports.</p>
+            <div class="pricing-cost">
+              <span class="pricing-amount">₹1L–2.5L</span>
+              <span class="pricing-period">/ month</span>
+            </div>
+            <div class="pricing-cadence">Managed monthly or annual contract</div>
+            <ul class="pricing-features">
+              <li>Real-time AI person, vehicle & breach detection</li>
+              <li>Live operations monitoring feed & instant alerts</li>
+              <li>Automated incident digests & searchable records</li>
+              <li>Dedicated client web dashboard & mobile portal</li>
+              <li>Weekly security intelligence summary</li>
+            </ul>
+            <a href="/contact?category=AI+Surveillance+%26+Live+Monitoring" class="pricing-action">Select Package ↗</a>
+          </article>
+
+          <article class="pricing-card">
+            <h3 class="pricing-tier">DEDICATED MONITORING</h3>
+            <p class="pricing-scope">Full-time on-site deployment for large industrial plants, refineries & campuses.</p>
+            <div class="pricing-cost">
+              <span class="pricing-amount">₹2.5L–6L+</span>
+              <span class="pricing-period">/ month</span>
+            </div>
+            <div class="pricing-cadence">Enterprise on-site SLA agreement</div>
+            <ul class="pricing-features">
+              <li>Full-time on-site drone dock & pilot crew</li>
+              <li>Continuous scheduled flight rotations</li>
+              <li>Sub-3-minute on-demand incident dispatch</li>
+              <li>Dual optical + FLIR thermal sensor payloads</li>
+              <li>Integrated with plant CCTV & central control room</li>
+            </ul>
+            <a href="/contact?category=Dedicated+Industrial+Monitoring" class="pricing-action">Select Package ↗</a>
+          </article>
+
+          <article class="pricing-card">
+            <h3 class="pricing-tier">SPECIAL INSPECTIONS</h3>
+            <p class="pricing-scope">Deep technical audits for solar farms, powerlines, pipelines & roofs.</p>
+            <div class="pricing-cost">
+              <span class="pricing-amount">CUSTOM</span>
+              <span class="pricing-period">/ project</span>
+            </div>
+            <div class="pricing-cadence">Project-based quotation</div>
+            <ul class="pricing-features">
+              <li>Solar panel thermal hotspot & diode defect mapping</li>
+              <li>Power transmission tower & pipeline corridor surveys</li>
+              <li>Roof integrity & 3D photogrammetric modeling</li>
+              <li>Engineering-grade GIS & CAD export deliverables</li>
+              <li>Certified drone inspector sign-off</li>
+            </ul>
+            <a href="/contact?category=Industrial+%26+Infrastructure+Inspection" class="pricing-action">Request Quote ↗</a>
+          </article>
+        </div>
+
+        <div class="pricing-disclaimer">
+          <strong>Pricing Note:</strong> Figures represent indicative service hypotheses based on standard operational parameters. Actual quotes depend on facility acreage, flight frequency, payload sensors, certified pilot coverage, and DGCA airspace permissions.
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="contact-grid-wrap" aria-hidden="true"><div class="contact-grid"></div></div>
+      <div class="contact-glow" aria-hidden="true"></div>
+      <div class="contact-drone-watermark" aria-hidden="true"><img src="assets/drone-enterprise.png" alt=""></div>
+      <div class="contact-inner">
+        <h2 id="contact-title">DEPLOY DRONE-AS-A-SERVICE<br><em>AT YOUR FACILITY.</em></h2>
+        <p>Partner with Warhawk Aerospace to pilot automated aerial security and industrial inspection at your site. Request a site feasibility assessment today.</p>
+        <a class="contact-action" href="/contact"><span>REQUEST PROPOSAL</span><span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" aria-label="Footer">
+    <div class="footer-bg" aria-hidden="true"></div>
+    <div class="footer-glow" aria-hidden="true"></div>
+    <div class="footer-main">
+      <div class="footer-col footer-brand">
+        <a class="wordmark" href="#top" aria-label="Warhawk Aerospace, back to top">
+          <span class="mark" aria-hidden="true"><img src="assets/warhawk-emblem.png" alt=""></span>
+          <span class="wordmark-text">WARHAWK<small>AEROSPACE</small></span>
+        </a>
+        <p>Drone-as-a-Service (DaaS) and AI-powered aerial surveillance & industrial inspection for enterprises across India. 100% DGCA compliant.</p>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-heading mono">NAVIGATION</h3>
+        <ul class="footer-links">
+          <li><a href="#manifesto">DaaS Model</a></li>
+          <li><a href="#flight">Flight Operations</a></li>
+          <li><a href="#systems">Platform & AI</a></li>
+          <li><a href="#capabilities">7 Core Services</a></li>
+          <li><a href="#pricing">Service Packages</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-heading mono">SERVICES</h3>
+        <ul class="footer-links">
+          <li><a href="#cap-patrol">AI Security Patrols</a></li>
+          <li><a href="#cap-inspection">Industrial Inspection</a></li>
+          <li><a href="#cap-detection">AI Object Detection</a></li>
+          <li><a href="#pricing">Dedicated Monitoring</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3 class="footer-heading mono">PROPOSALS</h3>
+        <ul class="footer-links">
+          <li><a href="/contact">Deployment Inquiries ↗</a></li>
+          <li><a href="/contact?category=Scheduled+Drone+Patrols">Scheduled Patrols</a></li>
+          <li><a href="/contact?category=AI+Surveillance+%26+Live+Monitoring">AI Surveillance</a></li>
+          <li><a href="/contact?category=Industrial+%26+Infrastructure+Inspection">Inspection Projects</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom mono">
+      <span>© 2026 WARHAWK AEROSPACE. ALL RIGHTS RESERVED.</span>
+      <div class="footer-legal-links" style="display:flex;gap:18px;flex-wrap:wrap;">
+        <a href="/privacy" style="color:#8E9EAF;text-decoration:none;">PRIVACY POLICY</a>
+        <a href="/terms" style="color:#8E9EAF;text-decoration:none;">TERMS OF SERVICE</a>
+        <a href="/admin" style="color:#408DD8;text-decoration:none;">OPERATOR PORTAL ↗</a>
+      </div>
+      <a href="#top" class="footer-top-link">BACK TO TOP ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,989 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060B12">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Operations & Inquiry Console — Warhawk Aerospace Admin</title>
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060B12;
+      --surface: #0C1520;
+      --surface-elevated: #111E2E;
+      --border: #1E334D;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --text: #F0F4F8;
+      --text-muted: #8B9EAF;
+      --accent-blue: #408DD8;
+      --accent-lime: #C9FF5E;
+      --success: #38D39F;
+      --warning: #FFA834;
+      --danger: #FF5C5C;
+      --font-sans: 'Manrope', -apple-system, sans-serif;
+      --font-display: 'Barlow Condensed', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    .admin-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo { width: 32px; height: 32px; object-fit: contain; }
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+    .brand-badge {
+      background: rgba(64, 141, 216, 0.15);
+      border: 1px solid rgba(64, 141, 216, 0.4);
+      color: var(--accent-blue);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 8px;
+    }
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .user-info {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .user-info b { color: var(--text); }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-logout:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    /* Main Container */
+    .admin-main {
+      padding: 32px 28px;
+      max-width: 1480px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent-blue);
+      opacity: 0.4;
+    }
+    .metric-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      color: #FFF;
+    }
+    .metric-card.won::before { background: var(--success); }
+    .metric-card.won .metric-value { color: var(--success); }
+    .metric-card.qualified::before { background: var(--accent-lime); }
+
+    /* Filters Bar */
+    .controls-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      flex: 1;
+    }
+    .search-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 14px;
+      color: #FFF;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      min-width: 260px;
+      flex: 1;
+      outline: none;
+    }
+    .search-input:focus {
+      border-color: var(--accent-blue);
+    }
+    .select-filter {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 12px;
+      color: #FFF;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+    }
+    .action-group {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-action {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: #192A3D;
+      border-color: var(--accent-blue);
+    }
+    .btn-action.lime {
+      background: var(--accent-lime);
+      color: #060B12;
+      border-color: transparent;
+    }
+    .btn-action.lime:hover {
+      background: #D8FF80;
+    }
+
+    /* Inquiries Table */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+    th {
+      background: #09101A;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    tr:hover td {
+      background: rgba(64, 141, 216, 0.04);
+    }
+    .ref-link {
+      font-family: var(--font-mono);
+      font-weight: 500;
+      color: var(--accent-blue);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .ref-link:hover { text-decoration: underline; }
+    .cust-name { font-weight: 600; color: #FFF; }
+    .cust-sub { font-size: 12px; color: var(--text-muted); }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge.new { background: rgba(64, 141, 216, 0.15); color: #72B5F6; border: 1px solid rgba(64, 141, 216, 0.3); }
+    .badge.contacted { background: rgba(255, 168, 52, 0.15); color: #FFB759; border: 1px solid rgba(255, 168, 52, 0.3); }
+    .badge.qualified { background: rgba(201, 255, 94, 0.15); color: #D6FF79; border: 1px solid rgba(201, 255, 94, 0.3); }
+    .badge.proposalsent { background: rgba(180, 115, 255, 0.15); color: #C699FF; border: 1px solid rgba(180, 115, 255, 0.3); }
+    .badge.won { background: rgba(56, 211, 159, 0.15); color: #4EEDB7; border: 1px solid rgba(56, 211, 159, 0.3); }
+    .badge.lost { background: rgba(255, 92, 92, 0.15); color: #FF8585; border: 1px solid rgba(255, 92, 92, 0.3); }
+    .badge.archived { background: rgba(142, 158, 175, 0.15); color: #A4B5C6; border: 1px solid rgba(142, 158, 175, 0.3); }
+
+    .notify-pill {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .notify-pill.sent { color: var(--success); }
+    .notify-pill.dev_queued { color: var(--warning); }
+    .notify-pill.failed { color: var(--danger); }
+
+    /* Pagination */
+    .table-footer {
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .pagination-btns {
+      display: flex;
+      gap: 8px;
+    }
+    .btn-page {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Drawer / Modal */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+    }
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      max-width: 600px;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      z-index: 210;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -12px 0 48px rgba(0, 0, 0, 0.8);
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer.open {
+      transform: translateX(0);
+    }
+    .drawer-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #09101A;
+    }
+    .drawer-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .drawer-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .detail-section {
+      margin-bottom: 24px;
+    }
+    .detail-section h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 6px;
+    }
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .detail-item {
+      margin-bottom: 8px;
+    }
+    .detail-item small {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .detail-item span, .detail-item b {
+      font-size: 14px;
+      color: #FFF;
+    }
+    .message-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      color: #E2E8F0;
+    }
+    .form-ctrl {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 12px;
+      color: #FFF;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    .form-ctrl:focus { border-color: var(--accent-blue); }
+    textarea.form-ctrl { min-height: 100px; resize: vertical; }
+
+    .timeline {
+      margin-top: 12px;
+      border-left: 2px solid var(--border);
+      padding-left: 16px;
+    }
+    .timeline-item {
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -21px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+    }
+    .timeline-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+    .timeline-text { font-size: 13px; color: #FFF; }
+
+    .drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      background: #09101A;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="header-brand">
+      <img src="assets/warhawk-emblem.png" alt="Warhawk Logo" class="brand-logo">
+      <div class="brand-title">WARHAWK AEROSPACE</div>
+      <span class="brand-badge">ADMIN CONSOLE</span>
+    </div>
+    <div class="user-controls">
+      <span class="user-info">OPERATOR: <b id="currentUsername">admin</b> (<span id="currentUserRole">admin</span>)</span>
+      <a href="/" target="_blank" class="btn-action">Public Site ↗</a>
+      <button id="logoutBtn" class="btn-logout">Logout</button>
+    </div>
+  </header>
+
+  <!-- Main View -->
+  <main class="admin-main">
+    <!-- Metrics Cards -->
+    <section class="metrics-grid" id="metricsGrid">
+      <div class="metric-card">
+        <div class="metric-label">Total Inquiries</div>
+        <div class="metric-value" id="metricTotal">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">New Leads</div>
+        <div class="metric-value" id="metricNew">0</div>
+      </div>
+      <div class="metric-card qualified">
+        <div class="metric-label">Qualified</div>
+        <div class="metric-value" id="metricQualified">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Proposals Sent</div>
+        <div class="metric-value" id="metricProposals">0</div>
+      </div>
+      <div class="metric-card won">
+        <div class="metric-label">Won Contracts</div>
+        <div class="metric-value" id="metricWon">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Conversion Rate</div>
+        <div class="metric-value" id="metricConversion">0.0%</div>
+      </div>
+    </section>
+
+    <!-- Controls Bar -->
+    <section class="controls-bar">
+      <div class="filter-group">
+        <input type="search" id="searchInput" class="search-input" placeholder="Search reference, name, company, email...">
+        <select id="statusFilter" class="select-filter">
+          <option value="all">All Statuses</option>
+          <option value="New">New</option>
+          <option value="Contacted">Contacted</option>
+          <option value="Qualified">Qualified</option>
+          <option value="Proposal Sent">Proposal Sent</option>
+          <option value="Negotiation">Negotiation</option>
+          <option value="Won">Won</option>
+          <option value="Lost">Lost</option>
+          <option value="Archived">Archived</option>
+        </select>
+        <select id="categoryFilter" class="select-filter">
+          <option value="all">All Service Categories</option>
+          <option value="Scheduled Drone Patrols">Scheduled Drone Patrols</option>
+          <option value="AI Surveillance & Live Monitoring">AI Surveillance & Live Monitoring</option>
+          <option value="Industrial & Infrastructure Inspection">Industrial & Infrastructure Inspection</option>
+          <option value="Dedicated Industrial Monitoring">Dedicated Industrial Monitoring</option>
+          <option value="Emergency & Incident Response">Emergency & Incident Response</option>
+          <option value="Turnkey DaaS Contracts">Turnkey DaaS Contracts</option>
+          <option value="Technology & Software Partnership">Technology Partnership</option>
+          <option value="General Inquiry">General Inquiry</option>
+        </select>
+        <select id="sortOrder" class="select-filter">
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+      </div>
+      <div class="action-group">
+        <button id="refreshBtn" class="btn-action">↻ Refresh</button>
+        <a id="exportBtn" href="/api/admin/export" class="btn-action lime">Export CSV ↓</a>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Reference ID</th>
+              <th>Date / Time</th>
+              <th>Customer Name</th>
+              <th>Company / Org</th>
+              <th>Service Package</th>
+              <th>Lead Status</th>
+              <th>Email Dispatch</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="inquiriesTableBody">
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 36px; color: var(--text-muted);">
+                Loading enterprise inquiries...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-footer">
+        <div>Showing <span id="showingCount">0</span> of <span id="totalCount">0</span> inquiries</div>
+        <div class="pagination-btns">
+          <button id="prevPage" class="btn-page" disabled>Previous</button>
+          <span id="pageIndicator" style="display: flex; align-items: center; padding: 0 8px; font-family: var(--font-mono); font-size: 12px;">Page 1 of 1</span>
+          <button id="nextPage" class="btn-page" disabled>Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Drawer Overlay & Panel -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <aside class="drawer" id="inquiryDrawer">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title" id="drawerRefId">INQUIRY DETAIL</div>
+        <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);" id="drawerDate">Timestamp</div>
+      </div>
+      <button class="drawer-close" id="drawerCloseBtn" aria-label="Close drawer">×</button>
+    </div>
+    <div class="drawer-body">
+      <!-- Customer Information -->
+      <div class="detail-section">
+        <h4>Customer Profile</h4>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <small>FULL NAME</small>
+            <b id="dFullName">—</b>
+          </div>
+          <div class="detail-item">
+            <small>WORK EMAIL</small>
+            <span id="dEmail">—</span>
+          </div>
+          <div class="detail-item">
+            <small>PHONE NUMBER</small>
+            <span id="dPhone">—</span>
+          </div>
+          <div class="detail-item">
+            <small>COMPANY / ORG</small>
+            <span id="dCompany">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scope & Requirement -->
+      <div class="detail-section">
+        <h4>Operational Scope</h4>
+        <div class="detail-item" style="margin-bottom: 12px;">
+          <small>REQUESTED SERVICE PACKAGE</small>
+          <b id="dCategory" style="color: var(--accent-blue); font-size: 15px;">—</b>
+        </div>
+        <div class="detail-item">
+          <small>PROJECT REQUIREMENTS / MESSAGE</small>
+          <div class="message-box" id="dMessage">—</div>
+        </div>
+      </div>
+
+      <!-- Status Management Form -->
+      <div class="detail-section">
+        <h4>Lead Management & Assignment</h4>
+        <div class="detail-item">
+          <small>UPDATE STATUS</small>
+          <select id="updateStatusSelect" class="form-ctrl">
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Proposal Sent">Proposal Sent</option>
+            <option value="Negotiation">Negotiation</option>
+            <option value="Won">Won</option>
+            <option value="Lost">Lost</option>
+            <option value="Archived">Archived</option>
+          </select>
+        </div>
+        <div class="detail-item">
+          <small>ASSIGN TO TEAM MEMBER</small>
+          <input type="text" id="updateAssigned" class="form-ctrl" placeholder="e.g. Sales Director, Field Lead">
+        </div>
+        <div class="detail-item">
+          <small>INTERNAL NOTES & AUDIT COMMENTS</small>
+          <textarea id="updateNotes" class="form-ctrl" placeholder="Add operational notes, site survey dates, or commercial details..."></textarea>
+        </div>
+      </div>
+
+      <!-- Notification Dispatch Info -->
+      <div class="detail-section">
+        <h4>Notification Delivery Status</h4>
+        <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg); padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border);">
+          <div>
+            <div style="font-size: 13px;" id="dNotifyStatus">Status: pending</div>
+            <small style="color: var(--text-muted); font-size: 11px;" id="dNotifyMeta">0 attempts</small>
+          </div>
+          <button id="retryNotifyBtn" class="btn-action" style="padding: 6px 12px; font-size: 12px;">Retry Dispatch</button>
+        </div>
+      </div>
+
+      <!-- Status History Timeline -->
+      <div class="detail-section">
+        <h4>Status Audit Trail</h4>
+        <div class="timeline" id="statusTimeline">
+          <div class="timeline-meta">No status transitions recorded yet.</div>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-action" id="drawerCancelBtn">Cancel</button>
+      <button class="btn-action lime" id="drawerSaveBtn">Save Changes</button>
+    </div>
+  </aside>
+
+  <script>
+    let currentPage = 1;
+    let currentInquiry = null;
+
+    // Elements
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortOrder = document.getElementById('sortOrder');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const tableBody = document.getElementById('inquiriesTableBody');
+    const prevPage = document.getElementById('prevPage');
+    const nextPage = document.getElementById('nextPage');
+    const pageIndicator = document.getElementById('pageIndicator');
+    const showingCount = document.getElementById('showingCount');
+    const totalCount = document.getElementById('totalCount');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const exportBtn = document.getElementById('exportBtn');
+
+    // Drawer elements
+    const drawerOverlay = document.getElementById('drawerOverlay');
+    const inquiryDrawer = document.getElementById('inquiryDrawer');
+    const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+    const drawerCancelBtn = document.getElementById('drawerCancelBtn');
+    const drawerSaveBtn = document.getElementById('drawerSaveBtn');
+    const retryNotifyBtn = document.getElementById('retryNotifyBtn');
+
+    // Check Auth session
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/admin/me');
+        if (!res.ok) {
+          window.location.href = '/admin/login';
+          return false;
+        }
+        const data = await res.json();
+        document.getElementById('currentUsername').textContent = data.username;
+        document.getElementById('currentUserRole').textContent = data.role;
+        return true;
+      } catch {
+        window.location.href = '/admin/login';
+        return false;
+      }
+    }
+
+    // Load Metrics
+    async function loadMetrics() {
+      try {
+        const res = await fetch('/api/admin/metrics');
+        if (!res.ok) return;
+        const m = await res.json();
+        document.getElementById('metricTotal').textContent = m.total;
+        document.getElementById('metricNew').textContent = m.new;
+        document.getElementById('metricQualified').textContent = m.qualified;
+        document.getElementById('metricProposals').textContent = m.proposalSent;
+        document.getElementById('metricWon').textContent = m.won;
+        document.getElementById('metricConversion').textContent = m.conversionRate + '%';
+      } catch (err) {
+        console.error('Failed to load metrics:', err);
+      }
+    }
+
+    // Load Inquiries
+    async function loadInquiries() {
+      const q = encodeURIComponent(searchInput.value.trim());
+      const s = encodeURIComponent(statusFilter.value);
+      const c = encodeURIComponent(categoryFilter.value);
+      const o = encodeURIComponent(sortOrder.value);
+
+      exportBtn.href = `/api/admin/export?search=${q}&status=${s}&category=${c}`;
+
+      try {
+        const res = await fetch(`/api/admin/inquiries?search=${q}&status=${s}&category=${c}&sortOrder=${o}&page=${currentPage}&limit=20`);
+        if (res.status === 401) {
+          window.location.href = '/admin/login';
+          return;
+        }
+        const data = await res.json();
+
+        showingCount.textContent = data.inquiries.length;
+        totalCount.textContent = data.total;
+        pageIndicator.textContent = `Page ${data.page} of ${data.totalPages || 1}`;
+        prevPage.disabled = data.page <= 1;
+        nextPage.disabled = data.page >= data.totalPages;
+
+        if (data.inquiries.length === 0) {
+          tableBody.innerHTML = `
+            <tr>
+              <td colspan="8" style="text-align: center; padding: 48px; color: var(--text-muted);">
+                No matching inquiries found.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tableBody.innerHTML = data.inquiries.map((r) => {
+          const sClass = (r.status || 'new').toLowerCase().replace(/\s+/g, '');
+          const dateStr = new Date(r.created_at).toLocaleString('en-IN', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+          });
+          const nClass = r.notification_status || 'pending';
+
+          return `
+            <tr>
+              <td><a class="ref-link" onclick="openDrawer('${r.reference_id}')">${escapeHtml(r.reference_id)}</a></td>
+              <td style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">${dateStr}</td>
+              <td>
+                <div class="cust-name">${escapeHtml(r.full_name)}</div>
+                <div class="cust-sub">${escapeHtml(r.email)}</div>
+              </td>
+              <td>${escapeHtml(r.company || '—')}</td>
+              <td><span style="color: var(--accent-blue);">${escapeHtml(r.inquiry_category)}</span></td>
+              <td><span class="badge ${sClass}">${escapeHtml(r.status || 'New')}</span></td>
+              <td><span class="notify-pill ${nClass}">● ${escapeHtml(r.notification_status || 'pending')}</span></td>
+              <td>
+                <button class="btn-action" style="padding: 5px 10px; font-size: 12px;" onclick="openDrawer('${r.reference_id}')">View</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        console.error('Failed to load inquiries:', err);
+      }
+    }
+
+    // Drawer management
+    window.openDrawer = async function(refId) {
+      try {
+        const res = await fetch(`/api/admin/inquiries/${refId}`);
+        if (!res.ok) return;
+        const { inquiry, history } = await res.json();
+        currentInquiry = inquiry;
+
+        document.getElementById('drawerRefId').textContent = inquiry.reference_id;
+        document.getElementById('drawerDate').textContent = 'Submitted: ' + new Date(inquiry.created_at).toLocaleString('en-IN');
+        document.getElementById('dFullName').textContent = inquiry.full_name;
+        document.getElementById('dEmail').textContent = inquiry.email;
+        document.getElementById('dPhone').textContent = inquiry.phone || 'None provided';
+        document.getElementById('dCompany').textContent = inquiry.company || 'None provided';
+        document.getElementById('dCategory').textContent = inquiry.inquiry_category;
+        document.getElementById('dMessage').textContent = inquiry.message;
+
+        document.getElementById('updateStatusSelect').value = inquiry.status || 'New';
+        document.getElementById('updateAssigned').value = inquiry.assigned_to || '';
+        document.getElementById('updateNotes').value = inquiry.admin_notes || '';
+
+        // Notification info
+        document.getElementById('dNotifyStatus').textContent = `Status: ${inquiry.notification_status || 'pending'}`;
+        document.getElementById('dNotifyMeta').textContent = `${inquiry.notification_attempts || 0} attempt(s)${inquiry.last_notification_error ? ' · ' + inquiry.last_notification_error : ''}`;
+
+        // Timeline
+        const timelineEl = document.getElementById('statusTimeline');
+        if (!history || history.length === 0) {
+          timelineEl.innerHTML = '<div class="timeline-meta">No status transitions recorded yet. Initial status: New.</div>';
+        } else {
+          timelineEl.innerHTML = history.map((h) => {
+            const hDate = new Date(h.created_at).toLocaleString('en-IN');
+            return `
+              <div class="timeline-item">
+                <div class="timeline-meta">${hDate} · By ${escapeHtml(h.changed_by)}</div>
+                <div class="timeline-text">Status changed from <b>${escapeHtml(h.previous_status || 'None')}</b> to <b>${escapeHtml(h.new_status)}</b></div>
+                ${h.notes ? `<div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">"${escapeHtml(h.notes)}"</div>` : ''}
+              </div>
+            `;
+          }).join('');
+        }
+
+        drawerOverlay.style.display = 'block';
+        inquiryDrawer.classList.add('open');
+      } catch (err) {
+        console.error('Failed to open drawer:', err);
+      }
+    };
+
+    function closeDrawer() {
+      inquiryDrawer.classList.remove('open');
+      drawerOverlay.style.display = 'none';
+      currentInquiry = null;
+    }
+
+    drawerCloseBtn.addEventListener('click', closeDrawer);
+    drawerCancelBtn.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+
+    // Save Inquiry Changes
+    drawerSaveBtn.addEventListener('click', async () => {
+      if (!currentInquiry) return;
+      drawerSaveBtn.disabled = true;
+      drawerSaveBtn.textContent = 'Saving...';
+
+      const updates = {
+        status: document.getElementById('updateStatusSelect').value,
+        assigned_to: document.getElementById('updateAssigned').value.trim(),
+        admin_notes: document.getElementById('updateNotes').value.trim()
+      };
+
+      try {
+        const res = await fetch(`/api/admin/inquiries/${currentInquiry.reference_id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updates)
+        });
+
+        if (res.ok) {
+          await loadInquiries();
+          await loadMetrics();
+          closeDrawer();
+        } else {
+          alert('Failed to update inquiry. Please try again.');
+        }
+      } catch (err) {
+        alert('Network error while updating inquiry.');
+      } finally {
+        drawerSaveBtn.disabled = false;
+        drawerSaveBtn.textContent = 'Save Changes';
+      }
+    });
+
+    // Retry notification
+    retryNotifyBtn.addEventListener('click', async () => {
+      if (!currentInquiry) return;
+      retryNotifyBtn.disabled = true;
+      retryNotifyBtn.textContent = 'Retrying...';
+
+      try {
+        const res = await fetch(`/api/admin/inquiries/${currentInquiry.reference_id}/retry-notification`, {
+          method: 'POST'
+        });
+        const data = await res.json();
+        alert(data.message || 'Notification retry complete.');
+        openDrawer(currentInquiry.reference_id);
+      } catch {
+        alert('Failed to retry notification.');
+      } finally {
+        retryNotifyBtn.disabled = false;
+        retryNotifyBtn.textContent = 'Retry Dispatch';
+      }
+    });
+
+    // Pagination
+    prevPage.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadInquiries();
+      }
+    });
+    nextPage.addEventListener('click', () => {
+      currentPage++;
+      loadInquiries();
+    });
+
+    // Filters
+    let searchDebounce;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
+        currentPage = 1;
+        loadInquiries();
+      }, 300);
+    });
+    statusFilter.addEventListener('change', () => { currentPage = 1; loadInquiries(); });
+    categoryFilter.addEventListener('change', () => { currentPage = 1; loadInquiries(); });
+    sortOrder.addEventListener('change', () => { currentPage = 1; loadInquiries(); });
+    refreshBtn.addEventListener('click', () => { loadInquiries(); loadMetrics(); });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/login';
+    });
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Startup
+    checkAuth().then((authed) => {
+      if (authed) {
+        loadMetrics();
+        loadInquiries();
+      }
+    });
+  </script>
+</body>
+</html>

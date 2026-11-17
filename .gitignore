@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# Persistent data and backups
+data/
+backups/
+*.db
+*.sqlite
+*.sqlite3
+
+# Build and test artifacts
+dist/
+test-results/
+coverage/
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
