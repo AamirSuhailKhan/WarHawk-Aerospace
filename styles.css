@@ -408,14 +408,25 @@ body.is-ready .hero-bottom{opacity:1;transform:translate3d(0,0,0)}
 .systems-drone{width:88%;height:88%;object-fit:contain;filter:drop-shadow(0 25px 45px rgba(0,0,0,.95)) drop-shadow(0 0 25px rgba(64,141,216,.3));will-change:transform}
 
 /* capabilities */
-.capabilities{position:relative;overflow:hidden;padding:84px 4.25vw 120px;background:var(--bg)}
+.capabilities{position:relative;overflow:hidden;padding:120px 4.25vw 120px;background:var(--bg);scroll-margin-top:80px}
 .cap-bg-grid{position:absolute;inset:-80px;pointer-events:none;opacity:.5;background-image:radial-gradient(circle,rgba(64,141,216,.24) 1px,transparent 1.5px);background-size:56px 56px;animation:gridDrift56 22s linear infinite;will-change:transform}
 @keyframes gridDrift56{to{transform:translate3d(-56px,-56px,0)}}
 .capabilities-header,.cap-grid{position:relative;z-index:2}
-.cap-title-row{display:flex;justify-content:space-between;align-items:end;padding:32px 0 56px;gap:50px}
-.cap-title-row h2{font:800 clamp(74px,8.8vw,160px)/.83 var(--display);letter-spacing:-.025em}
+.cap-title-row{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;padding:24px 0 44px}
+.cap-title-col{display:flex;flex-direction:column;gap:14px}
+.cap-section-kicker{display:inline-flex;align-items:center;gap:8px;font:600 11px var(--mono);letter-spacing:.12em;color:var(--blue)}
+.cap-section-kicker .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.cap-title-row h2{font:800 clamp(58px,7vw,124px)/.86 var(--display);letter-spacing:-.025em;margin:0}
 .cap-title-row h2 span{color:var(--blue)}
-.cap-title-row p{max-width:360px;font-size:15px;color:var(--dim);line-height:1.75;padding-bottom:10px}
+.cap-header-aside{
+  display:flex;flex-direction:column;gap:16px;max-width:580px;
+  background:rgba(14,26,40,.52);border:1px solid rgba(64,141,216,.22);
+  border-radius:14px;padding:22px 24px;box-shadow:0 12px 32px rgba(2,6,12,.4)
+}
+.cap-header-lede{font-size:14.5px;color:var(--light);line-height:1.7;margin:0}
+.cap-header-chips{display:flex;flex-wrap:wrap;gap:8px}
+.cap-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:6px;background:rgba(20,35,54,.7);border:1px solid rgba(64,141,216,.28);font:500 10.5px var(--mono);letter-spacing:.06em;color:var(--dim)}
+.cap-chip .chip-dot{width:5px;height:5px;border-radius:50%;background:var(--acid);box-shadow:0 0 6px var(--acid)}
 .cap-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px;position:relative;z-index:3}
 .cap-filter-btn{background:rgba(20,35,54,.6);border:1px solid rgba(56,81,106,.5);border-radius:999px;padding:9px 18px;font:600 11px var(--mono);letter-spacing:.08em;color:var(--dim);cursor:pointer;transition:all .25s var(--ease-expo)}
 .cap-filter-btn:hover{color:var(--light);border-color:var(--blue);background:rgba(20,35,54,.9)}
@@ -779,8 +790,9 @@ body.page-contact .footer-glow{background:radial-gradient(circle,rgba(196,242,12
   .systems-copy{width:43%}
   .systems-copy h2{font-size:clamp(58px,7.2vw,116px)}
   .systems-visual{width:46%}
-  .cap-title-row{align-items:start}
-  .cap-title-row h2{font-size:10vw}
+  .cap-title-row{grid-template-columns:1fr;gap:28px;align-items:start}
+  .cap-header-aside{justify-self:start;max-width:100%}
+  .cap-title-row h2{font-size:clamp(56px,8.5vw,100px)}
   .contact-layout{gap:36px;grid-template-columns:.9fr 1.1fr}
   .footer-main{grid-template-columns:1fr 1fr;gap:36px}
   .manifesto-pillars{grid-template-columns:repeat(2,1fr)}
@@ -853,9 +865,10 @@ body.page-contact .footer-glow{background:radial-gradient(circle,rgba(196,242,12
   .systems-visual{top:auto;bottom:6%;left:5vw;right:5vw;width:auto;max-width:none;height:42%;transform:none}
   .systems-radar{width:66%}
   .capabilities{padding:52px 5vw 80px}
-  .cap-title-row{display:block;padding:30px 0 38px}
-  .cap-title-row h2{font-size:clamp(68px,12vw,136px)}
-  .cap-title-row p{margin-top:20px;font-size:14px}
+  .cap-title-row{display:flex;flex-direction:column;gap:20px;padding:24px 0 32px}
+  .cap-header-aside{padding:18px 16px;max-width:100%}
+  .cap-title-row h2{font-size:clamp(48px,11vw,76px)}
+  .cap-header-lede{font-size:14px;line-height:1.65}
   .cap-filters{display:flex;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:8px;margin-bottom:24px;padding-bottom:8px;scrollbar-width:none}
   .cap-filters::-webkit-scrollbar{display:none}
   .cap-filter-btn{flex-shrink:0;white-space:nowrap;padding:8px 16px;font-size:10px}
