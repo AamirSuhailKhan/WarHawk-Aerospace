@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
 
-const jsFiles = ['server.js', 'script.js', 'contact-form.js', 'db.js', 'api/index.js'];
+const jsFiles = ['server.js', 'script.js', 'contact-form.js', 'db.js', 'api/index.js', 'api/health.js', 'api/contact.js'];
 for (const file of jsFiles) {
   execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
 }

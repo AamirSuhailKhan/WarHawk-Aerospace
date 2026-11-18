@@ -523,8 +523,17 @@ export function createRequestHandler(options = {}) {
   }
 
   return async function handleRequest(req, res) {
-    const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
-    const pathname = url.pathname;
+    const rawPath = req.headers['x-matched-path'] || req.headers['x-forwarded-uri'] || req.url || '/';
+    const url = new URL(rawPath.startsWith('http') ? rawPath : `http://${req.headers.host || 'localhost'}${rawPath.startsWith('/') ? '' : '/'}${rawPath}`);
+    let pathname = url.pathname;
+    if (pathname === '/api/index' || pathname === '/api/index.js') {
+      const orig = req.headers['x-vercel-matched-path'] || req.headers['x-forwarded-uri'] || req.url;
+      if (orig && orig !== '/api/index' && orig !== '/api/index.js') {
+        try {
+          pathname = new URL(orig.startsWith('http') ? orig : `http://localhost${orig.startsWith('/') ? '' : '/'}${orig}`).pathname;
+        } catch {}
+      }
+    }
 
     // --- HEALTH CHECKS ---
     if (req.method === 'GET' && pathname === '/api/health') {

@@ -90,7 +90,7 @@ class LocalDatabase {
     } catch (err) {
       if (err.code === 'EROFS' || err.code === 'EACCES') {
         const fallbackDir = path.join(os.tmpdir(), 'warhawk-data');
-        await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => {});
+        await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => { });
         this.filePath = path.join(fallbackDir, path.basename(this.filePath));
         dir = fallbackDir;
       } else {
@@ -123,7 +123,7 @@ class LocalDatabase {
       } catch (err) {
         if (err.code === 'EROFS' || err.code === 'EACCES') {
           const fallbackDir = path.join(os.tmpdir(), 'warhawk-data');
-          await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => {});
+          await fsp.mkdir(fallbackDir, { recursive: true }).catch(() => { });
           this.filePath = path.join(fallbackDir, path.basename(this.filePath));
           const tempPath = `${this.filePath}.${Date.now()}.tmp`;
           const json = JSON.stringify(this.data, null, 2);
@@ -653,8 +653,8 @@ export async function createDatabase({ dataDir, connectionString } = {}) {
   if (dbUrl && dbUrl.startsWith('postgres')) {
     try {
       const { default: pg } = await import('pg');
-      const sslConfig = process.env.DATABASE_SSL === 'false' 
-        ? false 
+      const sslConfig = process.env.DATABASE_SSL === 'false'
+        ? false
         : { rejectUnauthorized: false };
 
       const pool = new pg.Pool({
@@ -690,6 +690,6 @@ export async function createDatabase({ dataDir, connectionString } = {}) {
   return {
     type: 'local',
     db: localDb,
-    close: async () => {}
+    close: async () => { }
   };
 }
