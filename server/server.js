@@ -467,18 +467,32 @@ export function createRequestHandler(options = {}) {
       return;
     }
 
-    const fullPath = path.resolve(rootDir, relative);
-    if (!fullPath.startsWith(path.resolve(rootDir))) {
-      sendJson(res, 403, { ok: false, error: 'Forbidden' });
+    const candidateDirs = [
+      rootDir,
+      process.cwd(),
+      path.resolve(__dirname, '..'),
+      __dirname,
+      '/var/task'
+    ];
+
+    let fullPath = null;
+    for (const d of candidateDirs) {
+      if (!d) continue;
+      const p = path.resolve(d, relative);
+      try {
+        if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+          fullPath = p;
+          break;
+        }
+      } catch {}
+    }
+
+    if (!fullPath) {
+      sendJson(res, 404, { ok: false, error: 'Not Found' });
       return;
     }
 
     try {
-      const stat = await fsp.stat(fullPath);
-      if (!stat.isFile()) {
-        sendJson(res, 404, { ok: false, error: 'Not Found' });
-        return;
-      }
       const ext = path.extname(fullPath).toLowerCase();
       const mime = MIME_TYPES[ext] || 'application/octet-stream';
       const content = await fsp.readFile(fullPath);
