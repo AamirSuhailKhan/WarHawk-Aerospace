@@ -9,7 +9,9 @@ Turnkey Drone-as-a-Service (DaaS) and AI-Powered Aerial Surveillance & Industria
 - `styles.css` — Design system (`#060B12` base, `#142336`/`#182C43` frosted navy navbar, `#38516A` borders, `#C9FF5E` lime & `#408DD8` aerospace blue accents) and responsive layout.
 - `script.js` — Opening aperture reveal, active navigation scroll-spy, mobile drawer, capability category pre-selection, damped `requestAnimationFrame` scroll engine, and ambient particle canvases.
 - `contact-form.js` — Shared client-side form validation, live character count, idempotency keys, and API integration.
-- `server.js` — Production HTTP server serving static files, `/contact`, `/api/health`, and `POST /api/contact`.
+- `server/server.js` — Standalone HTTP server for local development, Docker, and API testing.
+- `api/` — Dedicated Vercel Serverless Functions (`api/index.js`, `api/health.js`, `api/contact.js`).
+- `vercel.json` — Edge routing, clean URLs, security headers, and asset caching.
 - `scripts/build.js` — Syntax verification and production bundle generation (`dist/`).
 - `tests/api.test.js` — API integration tests (validation, spam honeypot, deduplication, rate limiting, live email dispatch & failure handling).
 - `tests/e2e.test.js` — Headless browser Playwright tests across desktop (`1920px`, `1440px`, `1024px`), tablet (`768px`), and mobile (`390px`, `360px`).
