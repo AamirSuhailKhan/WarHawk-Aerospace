@@ -223,6 +223,23 @@ export function createRequestHandler(options = {}) {
   const loginAttempts = new Map();
   const sessions = new Map(); // token -> { username, role, expiresAt }
   const dedupeStore = new Map();
+  const staticMemoryCache = new Map();
+
+  // Pre-load core static assets into memory for instant serverless responses
+  try {
+    const candidateDirs = [rootDir, projectRoot, process.cwd(), path.resolve(__dirname, '..'), '/var/task'];
+    const prewarmFiles = ['index.html', 'contact.html', 'privacy.html', 'terms.html', 'admin-login.html', 'admin.html', 'styles.css', 'script.js', 'contact-form.js'];
+    for (const f of prewarmFiles) {
+      for (const d of candidateDirs) {
+        if (!d) continue;
+        const p = path.resolve(d, f);
+        if (fs.existsSync(p) && fs.statSync(p).isFile()) {
+          staticMemoryCache.set(f, fs.readFileSync(p));
+          break;
+        }
+      }
+    }
+  } catch {}
 
   let dbInstance = null;
   let dbType = 'local';
@@ -450,7 +467,8 @@ export function createRequestHandler(options = {}) {
   }
 
   async function serveStatic(reqPath, res) {
-    let relative = reqPath === '/' ? 'index.html' : reqPath === '/contact' ? 'contact.html' : reqPath.replace(/^\/+/, '');
+    let relative = (reqPath === '/' || !reqPath) ? 'index.html' : reqPath.replace(/^\/+/, '');
+    if (relative === 'contact') relative = 'contact.html';
     if (relative === 'privacy') relative = 'privacy.html';
     if (relative === 'terms') relative = 'terms.html';
     if (relative === 'admin/login') relative = 'admin-login.html';
@@ -467,12 +485,31 @@ export function createRequestHandler(options = {}) {
       return;
     }
 
+    // Check pre-warmed memory cache first for instant delivery
+    if (staticMemoryCache.has(relative)) {
+      const content = staticMemoryCache.get(relative);
+      const ext = path.extname(relative).toLowerCase();
+      const mime = MIME_TYPES[ext] || 'application/octet-stream';
+      const cacheControl = ext === '.html' || ext === '.css' || ext === '.js'
+        ? 'no-cache, must-revalidate'
+        : 'public, max-age=86400';
+      res.writeHead(200, setSecurityHeaders(res, {
+        'Content-Type': mime,
+        'Content-Length': content.length,
+        'Cache-Control': cacheControl
+      }));
+      res.end(content);
+      return;
+    }
+
     const candidateDirs = [
       rootDir,
+      projectRoot,
       process.cwd(),
       path.resolve(__dirname, '..'),
       __dirname,
-      '/var/task'
+      '/var/task',
+      '/vercel/path0'
     ];
 
     let fullPath = null;
@@ -496,6 +533,7 @@ export function createRequestHandler(options = {}) {
       const ext = path.extname(fullPath).toLowerCase();
       const mime = MIME_TYPES[ext] || 'application/octet-stream';
       const content = await fsp.readFile(fullPath);
+      staticMemoryCache.set(relative, content);
 
       const cacheControl = ext === '.html' || ext === '.css' || ext === '.js'
         ? 'no-cache, must-revalidate'
@@ -538,16 +576,24 @@ export function createRequestHandler(options = {}) {
   }
 
   return async function handleRequest(req, res) {
-    const rawPath = req.headers['x-matched-path'] || req.headers['x-forwarded-uri'] || req.url || '/';
-    const url = new URL(rawPath.startsWith('http') ? rawPath : `http://${req.headers.host || 'localhost'}${rawPath.startsWith('/') ? '' : '/'}${rawPath}`);
-    let pathname = url.pathname;
-    if (pathname === '/api/index' || pathname === '/api/index.js') {
-      const orig = req.headers['x-vercel-matched-path'] || req.headers['x-forwarded-uri'] || req.url;
-      if (orig && orig !== '/api/index' && orig !== '/api/index.js') {
-        try {
-          pathname = new URL(orig.startsWith('http') ? orig : `http://localhost${orig.startsWith('/') ? '' : '/'}${orig}`).pathname;
-        } catch {}
-      }
+    // 1. Determine client request URL
+    // Standard Node.js incoming request url is the authoritative client request path.
+    // If the serverless entrypoint was rewritten (e.g. /api/index), recover original path from x-forwarded-uri
+    let rawPath = req.url || '/';
+    if ((rawPath === '/api/index' || rawPath === '/api/index.js') && req.headers['x-forwarded-uri']) {
+      rawPath = req.headers['x-forwarded-uri'];
+    }
+
+    let url;
+    try {
+      url = new URL(rawPath.startsWith('http') ? rawPath : `http://${req.headers.host || 'localhost'}${rawPath.startsWith('/') ? '' : '/'}${rawPath}`);
+    } catch {
+      url = new URL('http://localhost/');
+    }
+
+    let pathname = url.pathname || '/';
+    if (pathname.length > 1 && pathname.endsWith('/')) {
+      pathname = pathname.slice(0, -1);
     }
 
     // --- HEALTH CHECKS ---
