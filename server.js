@@ -1069,6 +1069,11 @@ export function createAppServer(options = {}) {
   return http.createServer(handler);
 }
 
+const defaultHandler = createRequestHandler();
+export default async function handler(req, res) {
+  return defaultHandler(req, res);
+}
+
 const isMain = process.argv[1] && path.resolve(process.argv[1]) === __filename;
 if (isMain) {
   const port = Number(process.env.PORT || 5173);
