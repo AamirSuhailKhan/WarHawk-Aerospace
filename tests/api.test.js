@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import os from 'node:os';
 import path from 'node:path';
 import fsp from 'node:fs/promises';
-import { createAppServer } from '../server.js';
+import { createAppServer } from '../server/server.js';
 
 async function withServer(options, fn) {
   const tmpData = await fsp.mkdtemp(path.join(os.tmpdir(), 'wh-api-test-'));

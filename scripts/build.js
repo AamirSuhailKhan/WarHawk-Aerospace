@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
 
-const jsFiles = ['server.js', 'script.js', 'contact-form.js', 'db.js', 'api/index.js', 'api/health.js', 'api/contact.js'];
+const jsFiles = ['server/server.js', 'script.js', 'contact-form.js', 'db.js', 'api/index.js', 'api/health.js', 'api/contact.js'];
 for (const file of jsFiles) {
   execFileSync(process.execPath, ['--check', path.join(root, file)], { stdio: 'inherit' });
 }
@@ -28,7 +28,6 @@ const copyTargets = [
   'contact-form.js',
   'robots.txt',
   'sitemap.xml',
-  'server.js',
   'db.js',
   'package.json',
   '.env.example',
@@ -40,6 +39,17 @@ for (const item of copyTargets) {
   const src = path.join(root, item);
   if (fs.existsSync(src)) {
     await fsp.copyFile(src, path.join(dist, item));
+  }
+}
+
+// Copy server directory
+const serverSrc = path.join(root, 'server');
+const serverDest = path.join(dist, 'server');
+if (fs.existsSync(serverSrc)) {
+  await fsp.mkdir(serverDest, { recursive: true });
+  const serverFiles = await fsp.readdir(serverSrc);
+  for (const file of serverFiles) {
+    await fsp.copyFile(path.join(serverSrc, file), path.join(serverDest, file));
   }
 }
 

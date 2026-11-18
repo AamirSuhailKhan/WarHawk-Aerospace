@@ -5,7 +5,7 @@
  * Caches database connection pools across warm invocations.
  */
 
-import { createRequestHandler } from '../server.js';
+import { createRequestHandler } from '../server/server.js';
 
 const handler = createRequestHandler();
 

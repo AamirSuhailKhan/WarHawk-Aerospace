@@ -4,7 +4,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import { chromium } from 'playwright-core';
-import { createAppServer } from '../server.js';
+import { createAppServer } from '../server/server.js';
 
 const SCRATCH_DIR = process.env.SCREENSHOT_DIR || '';
 

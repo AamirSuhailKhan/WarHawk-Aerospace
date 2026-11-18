@@ -19,10 +19,11 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { createDatabase, hashPassword, verifyPassword } from './db.js';
+import { createDatabase, hashPassword, verifyPassword } from '../db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, '..');
 
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -41,7 +42,7 @@ function loadEnvFile(filePath) {
   }
 }
 
-loadEnvFile(path.join(__dirname, '.env'));
+loadEnvFile(path.join(projectRoot, '.env'));
 
 export const ALLOWED_CATEGORIES = new Set([
   'Scheduled Drone Patrols',
@@ -211,7 +212,7 @@ function buildOwnerEmailText(record) {
 }
 
 export function createRequestHandler(options = {}) {
-  const rootDir = options.rootDir || __dirname;
+  const rootDir = options.rootDir || projectRoot;
   const dataDir = options.dataDir || (process.env.VERCEL ? path.join(os.tmpdir(), 'warhawk-data') : path.join(rootDir, 'data'));
   const rateWindowMs = options.rateWindowMs ?? 15 * 60 * 1000;
   const rateMax = options.rateMax ?? Number(process.env.RATE_LIMIT_MAX || 8);
